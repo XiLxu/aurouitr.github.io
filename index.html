@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>开始游戏</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden; /* 隐藏页面溢出内容 */
+        background-color: #fff;
+    }
+    canvas {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -1; /* 将 canvas 移动到最底层，位于背景下方 */
+    }
+    button {
+        padding: 15px 30px;
+        font-size: 20px;
+        background-color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
+</head>
+<body>
+
+<button onclick="redirectToGamePage()">开始游戏</button>
+
+<script>
+function redirectToGamePage() {
+    // 修改此处的网址为你想要跳转的网页地址
+    window.location.href = "https://example.com/game";
+}
+
+// 创建 canvas 元素
+var canvas = document.createElement('canvas');
+document.body.appendChild(canvas);
+var ctx = canvas.getContext('2d');
+
+// 设置 canvas 尺寸为窗口尺寸
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+// 定义线条动画
+var lines = [];
+for (var i = 0; i < 50; i++) {
+    lines.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        length: Math.random() * 100 + 50,
+        speed: Math.random() * 0.5 + 0.1
+    });
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = 'rgba(255, 105, 180, 0.3)'; // 设置线条颜色和透明度
+    ctx.lineWidth = 2;
+    for (var i = 0; i < lines.length; i++) {
+        ctx.beginPath();
+        ctx.moveTo(lines[i].x, lines[i].y);
+        ctx.lineTo(lines[i].x, lines[i].y + lines[i].length);
+        ctx.stroke();
+
+        lines[i].y += lines[i].speed;
+
+        if (lines[i].y > canvas.height) {
+            lines[i].y = -lines[i].length;
+        }
+    }
+    requestAnimationFrame(draw);
+}
+
+// 开始绘制动画
+draw();
+</script>
+
+</body>
+</html>
